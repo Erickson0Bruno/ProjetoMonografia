@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+    db:
+        image: mongo
+        container_name: db
+        restart: always
+        networks: 
+            - mern-app
+        ports:
+            - "27017:27017"
+        volumes: 
+            - mongo-data:/data/db
+    
+    api:
+        image: ericksonbruno/sistemalogin
+        container_name: sistemalogin
+        restart: always
+        networks: 
+            - mern-app
+        depends_on: 
+            - db
+        ports: 
+            - "8081:8081"
+        command: npm start
+networks: 
+    mern-app:
+        driver: bridge
+volumes:
+    mongo-data: 
+        driver: local
