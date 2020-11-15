@@ -34,11 +34,9 @@ app.set('views', 'views');
     app.get('/usuarios*', (req, res, next) => {
         userServiceProxy(req, res, next);
     })
-    app.post('/usuarios', (req, res, next) =>{
+    app.post('/usuarios*', (req, res, next) =>{
         userServiceProxy(req, res, next);
     })
-
-
 
 
 app.use(logger('dev'));

@@ -1,0 +1,33 @@
+{{#each erros}}
+    <div class="alert alert-danger col-md-7 mx-auto">{{texto}}</div>
+    {{else}}
+{{/each}}
+
+<h3 class=" col-md-7 mx-auto">Cadastrar Usuário:</h3>
+
+<div class="card  col-md-7 mx-auto"> 
+    <div class="card-body">
+        <form action="" method="post">
+            <label for="nome"> Nome: </label>
+            <input type="text" class="form-control" name="nome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" class="form-control" required>
+
+            <label for="senha"> Senha:</label>
+            <input type="password" name="senha" class="form-control" required>
+
+            <label for="senha2"> Repita sua senha:</label>
+            <input type="password"  name="senha2" class="form-control" required>
+
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="eAdmin" id="defaultUnchecked">
+                <label class="custom-control-label" for="defaultUnchecked">Usuário Admin</label>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-success mt-4"> Criar conta</button>
+        </form>
+    </div>
+</div>

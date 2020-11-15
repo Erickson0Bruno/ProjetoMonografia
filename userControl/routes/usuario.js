@@ -114,7 +114,7 @@ router.get('/consultUser', (req, res) => {
 });
 router.post('/consultUser', (req, res) => {
     //console.log(req.body.email)
-    Usuario.find().where("email").equals(req.body.email).or.where("nome").equals("Erickson Bruno Pereira Costa")
+    Usuario.find().where("email").equals(req.body.email).where("nome").equals("Erickson Bruno Pereira Costa")
         
     
     .then(users => {

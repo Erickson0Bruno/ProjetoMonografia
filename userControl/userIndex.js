@@ -48,7 +48,7 @@ const usuarios = require("./routes/usuario")
     })
    
 //Routes
-app.use('/usuarios', usuarios);
+app.use('/', usuarios);
 
 
 
