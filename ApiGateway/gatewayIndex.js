@@ -8,8 +8,9 @@ const helmet = require('helmet');
 const handlebars =  require('express-handlebars')
 
 
-const userServiceProxy = httpProxy('http://localhost:8080');
+const userServiceProxy = httpProxy('http://localhost:3000');
 const loginServiceProxy = httpProxy('http://localhost:8085');
+
 
 // Proxy request
 /*
@@ -35,8 +36,12 @@ app.set('views', 'views');
         userServiceProxy(req, res, next);
     })
     app.post('/usuarios*', (req, res, next) =>{
+       // console.log(req)
+       console.log("Aqui")
+        
         userServiceProxy(req, res, next);
     })
+
 
 
 app.use(logger('dev'));

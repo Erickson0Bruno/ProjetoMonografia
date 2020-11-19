@@ -17,7 +17,6 @@ router.get('/registro',  (req, res) => {
 router.post('/registro', (req, res) => {
 
     var erros = []
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
         erros.push({texto: "Nome inválido"})
     }
@@ -34,18 +33,27 @@ router.post('/registro', (req, res) => {
         erros.push({texto: "Confirmação de Senha inválido"})
     }
     if(req.body.senha != req.body.senha2){
-        erros.push({texto: "Senhas não coincidem "})
+        erros.push({'texto': "Senhas não coincidem "})
     }
 
     if(erros.length > 0){
-        res.render('usuarios/registro', {erros: erros});
+       // var obj = {erro:[erros]} 
+       console.log(erros)
+       var er = []
+        for(i=0;i<erros.length; i++){
+            er[i] = erros[i].texto
+        }
+
+        var obj = {status: 1, erro:er}
+        res.send(obj)
+        //res.render('usuarios/registro', {erros: erros});
     }else{
        
         Usuario.findOne({email: req.body.email}).then((usuario)  => {
             if(usuario){
                 console.log("Já existe uma conta com este email")
-                req.flash("error_msg", "Já existe uma conta com este email")
-                res.redirect('/usuarios/registro');
+                var obj = {status: 1, erro:['Já existe uma conta com este email']} 
+                  res.send(obj)//JSON.stringify('Já existe uma conta com este email'))
             }else{
                 var eAdmin 
                 if(req.body.eAdmin){
@@ -80,6 +88,7 @@ router.post('/registro', (req, res) => {
                             let json = erros.map(function (p) {
                                 return p.toJSON()
                               });
+                            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw")
                             console.log(json)
                       
                             res.send(json)
@@ -102,17 +111,15 @@ router.post('/registro', (req, res) => {
             }
         }).catch((err) =>{
             
-            req.flash("error_msg", "Houve um erro interno")
-            res.redirect('/')
-
+           // req.flash("error_msg", "Houve um erro interno")
+           // res.redirect('/')
+            let json = err.map(function (p) {
+                return p.toJSON()
+              });
+              res.send(json)
         })
 
     }
-
-});
-
-router.get('/', (req, res) => {
-    res.render("admin/home");
 
 });
 

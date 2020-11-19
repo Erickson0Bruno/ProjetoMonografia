@@ -10,11 +10,11 @@ const getconsultUser = (req, res) => {
 const postconsultUser = async (req, res) => {
     try {
        
-        const usuarios = await axios.post( USERAUTH_ENDPOINT + '/consultUser', req.body)
+        const usuarios = await axios.post( USERAUTH_ENDPOINT + '/usuarios/consultUser', req.body)
         //console.log(usuarios.data)
         res.render('usuarios/consultUser', {usuarios : usuarios.data })
     } catch (err) {
-        res.send(err)
+        res.status(500).send("API OUT OF WORK");
         console.error(err)
     }
 
@@ -23,20 +23,20 @@ const postconsultUser = async (req, res) => {
 const postRegistUser = async(req, res) =>{
 
     try {
-        console.log(USERAUTH_ENDPOINT + '/registro')
-        const erros = await axios.post( USERAUTH_ENDPOINT + '/registro', req.body)
-        //console.log(erros)
+        console.log(USERAUTH_ENDPOINT + '/usuarios/registro')
+        const erros = await axios.post( USERAUTH_ENDPOINT + '/usuarios/registro', req.body)
         
-        console.log('tem erro')
-        res.render('usuarios/registro', {erros: erros.data});
+        if(erros.data.status = 1){
+            res.render('usuarios/registro', {error : erros.data.erro })   
+        }else{
+            req.flash("success_msg", "DEU CERTO")
+            res.redirect('/usuarios/registro');
+        }
         
-        //res.render('usuarios/consultUser', {usuarios : usuarios.data })
-        
-
         
     } catch (err) {
         res.send(err)
-        //console.error(err)
+        
     }
 
 

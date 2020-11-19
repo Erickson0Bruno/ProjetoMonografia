@@ -14,10 +14,11 @@
       <a href="/usuarios/registro" class="dropdown-item" style="margin-left:5px">REGISTRO</a>
 
       {{#if user}}
-      <a href="/logout" class="dropdown-item" style="margin-left:5px"> LOGOUT</a>
+      <a href="/admin/logout" class="dropdown-item" style="margin-left:5px"> LOGOUT</a>
+      <a href="/usuarios/consultUser" class="dropdown-item" style="margin-left:5px"> CONSULTAR </a>
       {{else}}
       <a href="/usuarios/consultUser" class="dropdown-item" style="margin-left:5px"> CONSULTAR </a>
-      <a href="/login" class="dropdown-item" style="margin-left:5px"> LOGIN </a>
+      <a href="/admin/login" class="dropdown-item" style="margin-left:5px"> LOGIN </a>
 
       {{/if}}
 <!--
