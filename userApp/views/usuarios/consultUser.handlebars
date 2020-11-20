@@ -6,15 +6,20 @@
             <label for="email">Email:</label>
             <input type="text" class="form-control" name="email" required >
          </div>
-         
+         <div class="col-xs-2">
+            <button class="btn btn-info mt-4 float-right" type="submit">Consultar</button>
+         </div>
       </div>
-         <button class="btn btn-info mt-4 " type="submit">Consultar</button>
+         
    </form>
    </div>
 
 </div>
 
-<h2> Lista de Usuario</h2>
+
+{{#if usuarios}}
+
+<h2> Lista de Usuários</h2>
 <hr>
    {{#each usuarios}}
    <div class="card  mt-4">
@@ -34,6 +39,7 @@
    {{else}}
    {{/each}}
 </div>
-   
+{{/if}}
+
 
 

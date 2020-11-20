@@ -9,31 +9,27 @@ const bcrypt = require('bcryptjs')
 const {Admin} = require('../helpers/verificaAdmin')
 const {AuthenticatedUser} = require('../helpers/verificaAdmin')
  
-router.get('/registro',  (req, res) => {
-    res.render('usuarios/registro');
-});
-
 
 router.post('/registro', (req, res) => {
 
     var erros = []
-    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+    if(!req.body.nome || typeof req.body.nome != undefined || req.body.nome != null){
         erros.push({texto: "Nome inválido"})
     }
     
     if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
-        erros.push({texto: "Email inválido"})
+        erros.push({texto: "\tEmail inválido"})
     }
 
     if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
-        erros.push({texto: "Senha inválida"})
+        erros.push({texto: "\tSenha inválida"})
     }
 
     if(!req.body.senha2 || typeof req.body.senha2 == undefined || req.body.senha2 == null){
-        erros.push({texto: "Confirmação de Senha inválido"})
+        erros.push({texto: "\tConfirmação de Senha inválido"})
     }
     if(req.body.senha != req.body.senha2){
-        erros.push({'texto': "Senhas não coincidem "})
+        erros.push({'texto': "\tSenhas não coincidem "})
     }
 
     if(erros.length > 0){
@@ -53,7 +49,7 @@ router.post('/registro', (req, res) => {
             if(usuario){
                 console.log("Já existe uma conta com este email")
                 var obj = {status: 1, erro:['Já existe uma conta com este email']} 
-                  res.send(obj)//JSON.stringify('Já existe uma conta com este email'))
+                res.send(obj)//JSON.stringify('Já existe uma conta com este email'))
             }else{
                 var eAdmin 
                 if(req.body.eAdmin){
@@ -127,14 +123,14 @@ router.post('/registro', (req, res) => {
 router.post('/consultUser', (req, res) => {
 
     try{
-        console.clear()  
+       // console.clear()  
         //Usuario.find().where("email").equals(req.body.email).exec(function(err, usuarios){
             Usuario.find().exec(function(err, usuarios){
 
                 let json = usuarios.map(function (p) {
                     return p.toJSON()
                   });
-                console.log(json)
+                //console.log(json)
           
             res.send(json)
           
@@ -155,13 +151,18 @@ router.get('/editUser', (req, res) => {
 
 
 router.get("/exc/:id", (req, res) => {
-    Usuario.remove({ 
+    console.log(req.params.id)
+    Usuario.deleteOne({ 
         "_id" : req.params.id
     }).then(() =>{
-        req.flash("success_msg", "Usuário Excluido com Sucesso!")
-         res.redirect('../consultUser')
+        console.log("Excluido")
+        var obj = {status: 0, erro:['Usuário Excluido com Sucesso']} 
+        res.send(obj)
     }).catch((err)=>{
         console.log(err)
+        var obj = {status: 1, erro:['Não foi possível Excluir usuário']} 
+        res.send(obj)
+        //console.log(err)
     
     })
     

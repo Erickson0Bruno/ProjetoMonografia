@@ -10,8 +10,9 @@ const postconsultUser = async (req, res) => {
         const usuarios = await axios.post( USERAUTH_ENDPOINT + '/consultUser', req.body)
         //console.log(usuarios.data)
 
+
         //if(erros.data.status = 1){
-            console.log(usuarios.data)
+            //console.log(usuarios.data)
             res.send(usuarios.data)
             //res.render('usuarios/consultUser', {usuarios : usuarios.data })
           //  }else{
@@ -48,8 +49,25 @@ const postRegistUser = async(req, res) =>{
 
 }
 
+const  getDeleteUser = async(req, res) =>{
+
+    try {
+        const erros = await axios.get( USERAUTH_ENDPOINT + '/exc/'+req.params.id)
+        console.log(erros.data)
+        res.send(erros.data)
+        
+    } catch (err) {
+        res.status(500).send("API OUT OF WORK");
+        //console.error(err)
+        
+    }
+
+
+}
+
 
 module.exports = {
     postconsultUser,
-    postRegistUser
+    postRegistUser,
+    getDeleteUser
 }

@@ -5,7 +5,7 @@ module.exports ={
             return next()
         }else{
             req.flash("error_msg", "Usuário precisa estar autenticado e ser um Administrador")
-            res.redirect('/');
+            res.redirect('/admin/login');
         }
 
     },

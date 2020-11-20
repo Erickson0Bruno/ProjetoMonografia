@@ -26,8 +26,11 @@ const postRegistUser = async(req, res) =>{
         console.log(USERAUTH_ENDPOINT + '/usuarios/registro')
         const erros = await axios.post( USERAUTH_ENDPOINT + '/usuarios/registro', req.body)
         
-        if(erros.data.status = 1){
-            res.render('usuarios/registro', {error : erros.data.erro })   
+        if(erros.data.status == 1){
+            req.flash("error_msg", erros.data.erro)
+            res.redirect('/usuarios/registro');
+
+            //res.render('usuarios/registro', {error : erros.data.erro })   
         }else{
             req.flash("success_msg", "DEU CERTO")
             res.redirect('/usuarios/registro');
@@ -42,8 +45,37 @@ const postRegistUser = async(req, res) =>{
 
 }
 
+
+const getDeleteUser = async(req, res) =>{ //("/exc/:id", (req, res) => {
+
+    try {
+        console.log(USERAUTH_ENDPOINT + '/usuarios/exc')
+        
+        //req.body = req.params.id
+        const erros = await axios.get(USERAUTH_ENDPOINT + '/usuarios/exc/'+req.params.id);
+        
+        if(erros.data.status == 1){
+            console.log("Passou")
+            req.flash("error_msg", erros.data.erro)
+            res.redirect('/usuarios/consultUser');
+           
+        }else{
+            req.flash("success_msg", erros.data.erro)
+            res.redirect('/usuarios/consultUser');
+        }
+        
+        
+    } catch (err) {
+        res.status(500).send("API OUT OF WORK");
+        //res.send(err)
+        
+    }
+   
+}
+
 module.exports = {
     getconsultUser,
     postconsultUser,
     postRegistUser,
+    getDeleteUser
 }
