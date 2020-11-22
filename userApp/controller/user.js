@@ -1,4 +1,4 @@
-const { USERAUTH_ENDPOINT } = require('../config/api_endpoints')
+const { API_GATEWAY_ADRESS } = require('../config/api_endpoints')
 const axios = require('axios');
 
 //Outro jeito de expor um get sem chamada pra outro microserviço.
@@ -10,9 +10,20 @@ const getconsultUser = (req, res) => {
 const postconsultUser = async (req, res) => {
     try {
        
-        const usuarios = await axios.post( USERAUTH_ENDPOINT + '/usuarios/consultUser', req.body)
+        const usuarios = await axios.post( API_GATEWAY_ADRESS + '/usuarios/consultUser', req.body)
         //console.log(usuarios.data)
-        res.render('usuarios/consultUser', {usuarios : usuarios.data })
+        if(usuarios.data.status == 1){
+            req.flash("error_msg", usuarios.data.erro)
+            res.redirect('/usuarios/consultUser');
+        }else{
+            if(usuarios.data.length == 0){
+                console.log("Nenhum usuário encontrado")
+                req.flash("error_msg", "Nenhum usuário encontrado")
+                res.redirect('/usuarios/consultUser')
+            }else{
+                res.render('usuarios/consultUser', {usuarios : usuarios.data,  userLengh: usuarios.data.length })
+            }
+        }
     } catch (err) {
         res.status(500).send("API OUT OF WORK");
         console.error(err)
@@ -23,8 +34,8 @@ const postconsultUser = async (req, res) => {
 const postRegistUser = async(req, res) =>{
 
     try {
-        console.log(USERAUTH_ENDPOINT + '/usuarios/registro')
-        const erros = await axios.post( USERAUTH_ENDPOINT + '/usuarios/registro', req.body)
+        console.log(API_GATEWAY_ADRESS + '/usuarios/registro')
+        const erros = await axios.post( API_GATEWAY_ADRESS + '/usuarios/registro', req.body)
         
         if(erros.data.status == 1){
             req.flash("error_msg", erros.data.erro)
@@ -49,18 +60,23 @@ const postRegistUser = async(req, res) =>{
 const getDeleteUser = async(req, res) =>{ //("/exc/:id", (req, res) => {
 
     try {
-        console.log(USERAUTH_ENDPOINT + '/usuarios/exc')
+        console.log(API_GATEWAY_ADRESS + '/usuarios/exc')
         
         //req.body = req.params.id
-        const erros = await axios.get(USERAUTH_ENDPOINT + '/usuarios/exc/'+req.params.id);
+        const retorno = await axios.get(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id);
         
-        if(erros.data.status == 1){
+        if(retorno.data.status == 1){ // Status == 1 means error
             console.log("Passou")
-            req.flash("error_msg", erros.data.erro)
+            res.render('usuarios/consultUser', {erros: retorno.data.msg_return})
+
+
+            /*
+            req.flash("error_msg", retorno.data.msg_return)
             res.redirect('/usuarios/consultUser');
+            */
            
         }else{
-            req.flash("success_msg", erros.data.erro)
+            req.flash("success_msg", retorno.data.msg_return)
             res.redirect('/usuarios/consultUser');
         }
         

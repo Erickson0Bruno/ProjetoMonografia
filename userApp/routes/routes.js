@@ -52,7 +52,7 @@ module.exports = app => {
     app.post('/usuarios/consultUser', postconsultUser)
 
     //Registro
-    app.get('/usuarios/registro', Admin,  (req, res) => {
+    app.get('/usuarios/registro',   (req, res) => {
         res.render('usuarios/registro.handlebars');
     })
     app.post('/usuarios/registro',  postRegistUser)

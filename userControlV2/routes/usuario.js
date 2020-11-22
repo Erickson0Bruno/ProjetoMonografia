@@ -13,7 +13,7 @@ const {AuthenticatedUser} = require('../helpers/verificaAdmin')
 router.post('/registro', (req, res) => {
 
     var erros = []
-    if(!req.body.nome || typeof req.body.nome != undefined || req.body.nome != null){
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
         erros.push({texto: "Nome inválido"})
     }
     
@@ -124,15 +124,16 @@ router.post('/consultUser', (req, res) => {
 
     try{
        // console.clear()  
-        //Usuario.find().where("email").equals(req.body.email).exec(function(err, usuarios){
-            Usuario.find().exec(function(err, usuarios){
-
-                let json = usuarios.map(function (p) {
-                    return p.toJSON()
-                  });
-                //console.log(json)
-          
-            res.send(json)
+        //Usuario.find().where("email").equals(req.body.email).where("nome").equals(req.body.nome).exec(function(err, usuarios){
+        Usuario.find({email: { $regex: '.*' + req.body.email + '.*' }, 
+                    nome: { $regex: '.*' + req.body.nome + '.*' }
+                    }).exec(function(err, usuarios){
+            let json = usuarios.map(function (p) {
+                return p.toJSON()
+                });
+            //console.log(json)
+        
+        res.send(json)
           
         })
         
