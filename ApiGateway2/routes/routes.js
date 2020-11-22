@@ -1,7 +1,8 @@
 const {
     postconsultUser,
     postRegistUser,
-    getDeleteUser
+    getDeleteUser,
+    getconsultUserWithID
 } = require('../controller/user')
 
 const {
@@ -13,10 +14,12 @@ module.exports = app => {
     
     //Users
     app.post('/usuarios/consultUser', postconsultUser)//Consulta de Usuários
+    app.get('/usuarios/consultUser/:id', getconsultUserWithID)
     app.post('/usuarios/registro', postRegistUser) //Registro de novos usuários
     //Deletar
-    app.get('/usuarios/exc/:id', getDeleteUser)
+    app.post('/usuarios/exc/:id', getDeleteUser)
     
+
 
 
     //LOGIN

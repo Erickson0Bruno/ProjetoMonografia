@@ -34,13 +34,14 @@
    {{#each usuarios}}
    <div class="card  mt-4">
       
-      <div class="card-body">
-            
-            
+      <div class="card-body"> 
             <h5>Usuario: {{nome}}</h5><br>
             <small>Email: {{email}}</small><br>
             <a href="/usuarios/exc/{{_id}}">
                <button class="btn btn-danger mt-3"> Deletar</button>
+            </a>
+            <a href="/usuarios/edit/{{_id}}">
+               <button class="btn btn-info mt-3"> Alterar</button>
             </a>
          
       </div>  

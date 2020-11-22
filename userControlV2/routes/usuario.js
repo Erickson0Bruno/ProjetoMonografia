@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose')
 require('../models/Usuario')
 const Usuario = mongoose.model('usuarios')
+require('../models/Retorno')
+const Retorno = mongoose.model('retorno')
 const bcrypt = require('bcryptjs')
 
 //Helpers
@@ -11,52 +13,47 @@ const {AuthenticatedUser} = require('../helpers/verificaAdmin')
  
 
 router.post('/registro', (req, res) => {
-
+    var retorno = new Retorno();
+    retorno.status = '1' // Código de erro
+   
     var erros = []
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
-        erros.push({texto: "Nome inválido"})
+        erros.push("Nome inválido")
     }
     
     if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
-        erros.push({texto: "\tEmail inválido"})
+        erros.push("\tEmail inválido")
     }
 
     if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null){
-        erros.push({texto: "\tSenha inválida"})
+        erros.push("\tSenha inválida")
     }
 
     if(!req.body.senha2 || typeof req.body.senha2 == undefined || req.body.senha2 == null){
-        erros.push({texto: "\tConfirmação de Senha inválido"})
+        erros.push( "\tConfirmação de Senha inválido")
     }
     if(req.body.senha != req.body.senha2){
-        erros.push({'texto': "\tSenhas não coincidem "})
+        erros.push("\tSenhas não coincidem ")
     }
 
     if(erros.length > 0){
-       // var obj = {erro:[erros]} 
-       console.log(erros)
-       var er = []
-        for(i=0;i<erros.length; i++){
-            er[i] = erros[i].texto
-        }
-
-        var obj = {status: 1, erro:er}
-        res.send(obj)
-        //res.render('usuarios/registro', {erros: erros});
+        retorno.return_msg = erros 
+        res.send(toJson(retorno)) 
     }else{
        
         Usuario.findOne({email: req.body.email}).then((usuario)  => {
             if(usuario){
-                console.log("Já existe uma conta com este email")
-                var obj = {status: 1, erro:['Já existe uma conta com este email']} 
-                res.send(obj)//JSON.stringify('Já existe uma conta com este email'))
+                retorno.return_msg.push('Já existe uma conta com este email')
+                res.send(toJson(retorno))
             }else{
+                //Verifica se o usuario é Admin
                 var eAdmin 
                 if(req.body.eAdmin){
                     eAdmin = '1'
                 }else{
                     eAdmin = '0'
                 }
+
                 const newUser = new Usuario({
                     nome: req.body.nome,
                     email: req.body.email,
@@ -67,9 +64,8 @@ router.post('/registro', (req, res) => {
                 bcrypt.genSalt(10, (err, salt) =>{
                     bcrypt.hash(newUser.senha, salt, (erro, hash) => {
                         if(erro){
-                            console.log("Houve um erro durante o salvamento do usuário")
-                            req.flash("error_msg", "Houve um erro durante o salvamento do usuário")
-                            res.redirect('/');
+                            retorno.return_msg.push("Houve um erro durante o salvamento do usuário")
+                            res.send(toJson(retorno))
                         }
 
                         newUser.senha = hash
@@ -77,42 +73,29 @@ router.post('/registro', (req, res) => {
                         console.log(hash)
 
                         newUser.save().then(() =>{
-                            //console.log("Usuário salvo com sucesso")
-                            //req.flash("success_msg", "Usuário salvo com sucesso")
-                            //res.redirect('/');
-                            //res.toJSON(erros)
-                            let json = erros.map(function (p) {
-                                return p.toJSON()
-                              });
-                            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw")
-                            console.log(json)
-                      
-                            res.send(json)
-                        }).catch((erro) =>{
-                            //console.log("Erro ao salvar usuário")
-                            //console.log(erro)
-                            //req.flash("error_msg", "Erro ao salvar usuário")
-                            //res.redirect('/usuarios/registro');
-                            //res.toJSON(erros)
+                            retorno.status = '0'
+                            retorno.return_msg = erros
+                            retorno.return_msg.push("Usuário Salvo com Sucesso.")
+                            res.send(toJson(retorno))
 
+                        }).catch((erro) =>{
+                            retorno.return_msg.push("Erro ao salvar usuário no Banco")
+                            res.send(toJson(retorno))
+                            
                         })
                     })
 
                 })
-
-
-
-
-
             }
         }).catch((err) =>{
             
            // req.flash("error_msg", "Houve um erro interno")
            // res.redirect('/')
-            let json = err.map(function (p) {
-                return p.toJSON()
-              });
-              res.send(json)
+           retorno.return_msg.push("Erro ao salvar usuário no Banco")
+           restorno.returnData = err
+           res.status(500).toJson(retorno)
+           console.log(err)
+            //res.status(500).json({ err, isError: true })
         })
 
     }
@@ -121,22 +104,36 @@ router.post('/registro', (req, res) => {
 
 
 router.post('/consultUser', (req, res) => {
+    var retorno = new Retorno()
 
+    
     try{
        // console.clear()  
         //Usuario.find().where("email").equals(req.body.email).where("nome").equals(req.body.nome).exec(function(err, usuarios){
-        Usuario.find({email: { $regex: '.*' + req.body.email + '.*' }, 
+        const query = Usuario.find({email: { $regex: '.*' + req.body.email + '.*' }, 
                     nome: { $regex: '.*' + req.body.nome + '.*' }
-                    }).exec(function(err, usuarios){
-            let json = usuarios.map(function (p) {
-                return p.toJSON()
-                });
+                    })//.exec(function(err, usuarios){
+        const promisse = query.exec()
+
+        promisse.then(usuarios => {
+            
+            if(usuarios.length == 0){
+                retorno.return_msg.push('Nenhum usuario encontrado')
+                res.send(toJson(retorno));
+            }else{
+                retorno.status = '0'
+               retorno.return_msg.push('Encontrou')
+                retorno.returnData = usuarios
+                res.send(toJson(retorno));
+            }
             //console.log(json)
-        
-        res.send(json)
-          
+            //res.send(json)
+        }).catch(err => {
+            retorno.status = '1'
+            retorno.return_msg.json("Ocorreu algum erro")
+            res.status(500).send(toJson(retorno));
         })
-        
+            
      
     }catch (err){
         console.log(err)
@@ -146,28 +143,67 @@ router.post('/consultUser', (req, res) => {
     
 });
 
-router.get('/editUser', (req, res) => {
-    res.render('admin/')
+router.get('/consultUser/:id', (req, res) => {
+    var retorno = new Retorno()
+
+    
+    try{
+        const query = Usuario.find({ "_id" : req.params.id})
+        const promisse = query.exec()
+
+        promisse.then(usuarios => {
+            
+            if(usuarios.length == 0){
+                retorno.return_msg.push('Nenhum usuario encontrado')
+                res.send(toJson(retorno));
+            }else{
+                retorno.status = '0'
+                retorno.return_msg.push('Encontrou')
+                retorno.returnData = usuarios
+                res.send(toJson(retorno));
+            }
+            //console.log(json)
+            //res.send(json)
+        }).catch(err => {
+            retorno.status = '1'
+            retorno.return_msg.json("Ocorreu algum erro")
+            res.status(500).send(toJson(retorno));
+        })
+            
+     
+    }catch (err){
+        console.log(err)
+        res.status(500).json({ err, isError: true })
+        
+    }
+    
 });
 
-
 router.get("/exc/:id", (req, res) => {
+    var retorno = new Retorno()
+
     console.log(req.params.id)
     Usuario.deleteOne({ 
         "_id" : req.params.id
     }).then(() =>{
         console.log("Excluido")
-        var obj = {status: 0, erro:['Usuário Excluido com Sucesso']} 
-        res.send(obj)
+        retorno.status = '0'
+        retorno.return_msg = 'Usuário Excluido com Sucesso'
+        //var obj = {status: 0, erro:['Usuário Excluido com Sucesso']} 
+        res.send(toJson(retorno))
     }).catch((err)=>{
-        console.log(err)
-        var obj = {status: 1, erro:['Não foi possível Excluir usuário']} 
-        res.send(obj)
-        //console.log(err)
+      res.status(500).json(toJson(retorno));
+  
     
     })
     
 });
 
+function toJson(retorno){
+    let json = JSON.stringify(retorno)
+    console.log(json)
+        return json
+
+}
 
 module.exports = router

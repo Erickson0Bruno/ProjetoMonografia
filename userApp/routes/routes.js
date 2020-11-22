@@ -5,7 +5,8 @@ const {
     getconsultUser,
     postconsultUser,
     postRegistUser,
-    getDeleteUser
+    getDeleteUser,
+    getEditUser,
 } = require('../controller/user')
 
 const {
@@ -59,6 +60,9 @@ module.exports = app => {
 
     //Deletar
     app.get('/usuarios/exc/:id', getDeleteUser)
+
+    //Alterar
+    app.get('/usuarios/edit/:id', getEditUser)
     
 
 //LOGIN AND LOGOUT
