@@ -9,11 +9,12 @@ const getconsultUser = (req, res) => {
 
 const postconsultUser = async (req, res) => {
     try {
-       
+       //console.log(req.body)
         const usuarios = await axios.post( API_GATEWAY_ADRESS + '/usuarios/consultUser', req.body)
         //console.log(usuarios.data)
         if(usuarios.data.status == 1){
-            console.log(usuarios.data.return_msg)
+            //console.log(usuarios.response.status)
+          //  console.log(usuarios.data.return_msg)
             req.flash("error_msg", usuarios.data.return_msg)
             res.redirect('/usuarios/consultUser');
         }else{
@@ -22,8 +23,9 @@ const postconsultUser = async (req, res) => {
             
         }
     } catch (err) {
-        res.status(500).send("API OUT OF WORK");
-        console.error(err)
+        console.log(res.response.status)
+        //res.status(500).send("API OUT OF WORK");
+        //console.error(err)
     }
 
 }
@@ -57,15 +59,17 @@ const getDeleteUser = async(req, res) =>{ //("/exc/:id", (req, res) => {
         console.log(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id)
         
         //req.body = req.params.id
-        const retorno = await axios.get(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id);
-        
+        const retorno = await axios.DELETE(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id);
+        //console.log(retorno.data)
 
         if(retorno.data.status == 1){
+            
             req.flash("error_msg", retorno.data.return_msg)
             res.redirect('/usuarios/consultUser');
 
         }else{
-            console.log(retorno.data)
+            //console.log(retorno.data.status)
+            //console.log(retorno.data)
             req.flash("success_msg", retorno.data.return_msg)
             res.redirect('/usuarios/consultUser');
         } 
@@ -85,11 +89,11 @@ const getEditUser = async(req, res) =>{
         const usuarios = await axios.get( API_GATEWAY_ADRESS + '/usuarios/consultUser/' +req.params.id)
         //console.log(usuarios.data)
         if(usuarios.data.status == 1){
-            console.log(usuarios.data.return_msg)
+            //console.log(usuarios.data.return_msg)
             req.flash("error_msg", usuarios.data.return_msg)
             res.redirect('/usuarios/consultUser');
         }else{
-            console.log({usuarios : usuarios.data.returnData[0]})
+            //console.log({usuarios : usuarios.data.returnData[0]})
             res.render('usuarios/alterarUser.handlebars', {usuarios : usuarios.data.returnData[0]})
             
         }
@@ -102,10 +106,37 @@ const getEditUser = async(req, res) =>{
 
 }
 
+const postEditUser = async(req, res) =>{ 
+    try {
+        console.log(req.body)
+        console.log(API_GATEWAY_ADRESS + '/usuarios/edit/'+req.body.id)
+        const retorno = await axios.put( API_GATEWAY_ADRESS + '/usuarios/edit', req.body)
+        //console.log(usuarios.data)
+      
+        if(retorno.data.status == 1){
+            console.log(retorno.data.return_msg)
+            req.flash("error_msg", retorno.data.return_msg)
+            res.redirect('/usuarios/consultUser');
+        }else{
+            req.flash("success_msg", retorno.data.return_msg)
+            res.redirect('/usuarios/consultUser');
+        }
+        
+    } catch (err) {
+        console.error(err)
+        res.status(500).send("API OUT OF WORK");
+        
+    }
+
+
+
+}
+
 module.exports = {
     getconsultUser,
     postconsultUser,
     postRegistUser,
     getDeleteUser,
-    getEditUser
+    getEditUser, 
+    postEditUser
 }

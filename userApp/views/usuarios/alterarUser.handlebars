@@ -1,9 +1,11 @@
 
 <h3 class=" col-md-7 mx-auto">Alterar Usuário:</h3>
-{{usuarios}}
 <div class="card  col-md-7 mx-auto"> 
     <div class="card-body">
-        <form action="/usuarios/alterarUser" method="post">
+        <form action="/usuarios/edit/" method="post">
+            
+            <input type="hidden" name="id" id="input" class="form-control" value="{{usuarios._id}}">
+            
             <label for="nome"> Nome: </label>
             <input type="text" class="form-control" name="nome" value="{{usuarios.nome}}">
 

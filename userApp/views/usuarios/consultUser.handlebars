@@ -37,9 +37,13 @@
       <div class="card-body"> 
             <h5>Usuario: {{nome}}</h5><br>
             <small>Email: {{email}}</small><br>
-            <a href="/usuarios/exc/{{_id}}">
-               <button class="btn btn-danger mt-3"> Deletar</button>
-            </a>
+
+ 
+                     
+         <form action="/usuarios/exc/{{_id}}" method="GET">
+            <button type="submit" class="btn btn-danger mt-3">Excluir</button>
+         </form>
+
             <a href="/usuarios/edit/{{_id}}">
                <button class="btn btn-info mt-3"> Alterar</button>
             </a>

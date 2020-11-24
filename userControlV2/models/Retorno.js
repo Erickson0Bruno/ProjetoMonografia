@@ -9,7 +9,11 @@ const Retorno = new Schema({
     return_msg:{
         type : []
     },
+    codigo_erro: {
+        type: String
+    },
     returnData: {
+        
         type : []
         
     }

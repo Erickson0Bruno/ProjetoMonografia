@@ -7,7 +7,6 @@ module.exports ={
             req.flash("error_msg", "Usuário precisa estar autenticado e ser um Administrador")
             res.redirect('/admin/login');
         }
-
     },
 
     AuthenticatedUser: function(req, res, next){
@@ -17,8 +16,6 @@ module.exports ={
             req.flash("error_msg", "Usuário precisa estar autenticado")
             res.redirect('/');
         }
-
-
     }
 
 

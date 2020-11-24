@@ -7,6 +7,7 @@ const {
     postRegistUser,
     getDeleteUser,
     getEditUser,
+    postEditUser
 } = require('../controller/user')
 
 const {
@@ -59,10 +60,11 @@ module.exports = app => {
     app.post('/usuarios/registro',  postRegistUser)
 
     //Deletar
-    app.get('/usuarios/exc/:id', getDeleteUser)
+    app.delete('/usuarios/exc/:id', getDeleteUser)
 
     //Alterar
     app.get('/usuarios/edit/:id', getEditUser)
+    app.post('/usuarios/edit/',  postEditUser)
     
 
 //LOGIN AND LOGOUT

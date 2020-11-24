@@ -50,6 +50,8 @@ const router = require('./routes/routes')
         next()
 
     })
+
+    
    
 //importa as rotas
 router(app)
