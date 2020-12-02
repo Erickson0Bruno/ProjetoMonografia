@@ -9,12 +9,8 @@ const getconsultUser = (req, res) => {
 
 const postconsultUser = async (req, res) => {
     try {
-       //console.log(req.body)
         const usuarios = await axios.post( API_GATEWAY_ADRESS + '/usuarios/consultUser', req.body)
-        //console.log(usuarios.data)
         if(usuarios.data.status == 1){
-            //console.log(usuarios.response.status)
-          //  console.log(usuarios.data.return_msg)
             req.flash("error_msg", usuarios.data.return_msg)
             res.redirect('/usuarios/consultUser');
         }else{
@@ -24,7 +20,7 @@ const postconsultUser = async (req, res) => {
         }
     } catch (err) {
         console.log(res.response.status)
-        //res.status(500).send("API OUT OF WORK");
+        res.status(500).send("API OUT OF WORK");
         //console.error(err)
     }
 
@@ -58,9 +54,7 @@ const getDeleteUser = async(req, res) =>{ //("/exc/:id", (req, res) => {
     try {
         console.log(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id)
         
-        //req.body = req.params.id
-        const retorno = await axios.DELETE(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id);
-        //console.log(retorno.data)
+        const retorno = await axios.delete(API_GATEWAY_ADRESS + '/usuarios/exc/'+req.params.id);
 
         if(retorno.data.status == 1){
             
@@ -75,6 +69,7 @@ const getDeleteUser = async(req, res) =>{ //("/exc/:id", (req, res) => {
         } 
         
     } catch (err) {
+        console.log(err)
         res.status(500).send("API OUT OF WORK");
         //res.send(err)
         

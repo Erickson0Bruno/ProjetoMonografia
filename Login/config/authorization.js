@@ -8,37 +8,28 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
  //Passport Midware
+
+module.exports.SECRET = "164fee6cc59730e452b0eca679499a1e"
  
 module.exports = function(passport){
    
-    passport.use(new localStrategy({usernameField: 'email', passwordField: "password"}, (email, senha, done) =>{
+    passport.use(new localStrategy({usernameField: 'email', passwordField: "password"}, (
+        email, senha, done) =>{
 
         Usuario.findOne({email: email}).then((usuario) => {
             if(!usuario){
                 
-                return done(null, false, {message: "Esta conta não existe"})
+                return done(null, false,  "Esta conta não existe")
             }
 
-           /* bcrypt.compare( senha, usuario.senha, (erro, batem) =>{
-                if(!batem){
-                    console.log("Batem ")
-                    return done(null, usuario)
-                }else{
-                    console.log("Não Batem ")
-                    return done(null, false, {message:"Senha incorreta"})
-                }
-            })
-            */
             // comparando as senhas
             bcrypt.compare(senha, usuario.senha, (err, isValid) => {
-                
                 if (err) { 
                     return done(err) 
                 }if (!isValid) {
                     
-                    return done(null, false, {message: "Senha incorreta"}) 
+                    return done(null, false, "Senha incorreta") 
                 }
-
                 return done(null, usuario) 
             })
 

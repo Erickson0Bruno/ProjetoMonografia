@@ -89,13 +89,10 @@ router.post('/registro', (req, res) => {
             }
         }).catch((err) =>{
             
-           // req.flash("error_msg", "Houve um erro interno")
-           // res.redirect('/')
            retorno.return_msg.push("Erro ao salvar usuário no Banco")
            restorno.returnData = err
            res.status(500).toJson(retorno)
            console.log(err)
-            //res.status(500).json({ err, isError: true })
         })
 
     }
@@ -108,11 +105,9 @@ router.post('/consultUser', (req, res) => {
 
     
     try{
-       // console.clear()  
-        //Usuario.find().where("email").equals(req.body.email).where("nome").equals(req.body.nome).exec(function(err, usuarios){
         const query = Usuario.find({email: { $regex: '.*' + req.body.email + '.*' }, 
                     nome: { $regex: '.*' + req.body.nome + '.*' }
-                    })//.exec(function(err, usuarios){
+                    })
         const promisse = query.exec()
 
         promisse.then(usuarios => {
@@ -128,8 +123,7 @@ router.post('/consultUser', (req, res) => {
                 res.send(toJson(retorno));
 
             }
-            //console.log(json)
-            //res.send(json)
+           
         }).catch(err => {
             retorno.status = '1'
             retorno.return_msg.json("Ocorreu algum erro")
@@ -164,8 +158,7 @@ router.get('/consultUser/:id', (req, res) => {
                 retorno.returnData = usuarios
                 res.send(toJson(retorno));
             }
-            //console.log(json)
-            //res.send(json)
+           
         }).catch(err => {
             retorno.status = '1'
             retorno.return_msg.json("Ocorreu algum erro")
@@ -191,7 +184,6 @@ router.delete("/exc/:id", (req, res) => {
         console.log("Excluido")
         retorno.status = '0'
         retorno.return_msg = 'Usuário Excluido com Sucesso'
-        //var obj = {status: 0, erro:['Usuário Excluido com Sucesso']} 
         
         res.send(toJson(retorno))
     }).catch((err)=>{
@@ -202,14 +194,45 @@ router.delete("/exc/:id", (req, res) => {
     
 });
 
-
 router.put("/edit/", (req, res) => {
     var retorno = new Retorno()
-   console.log(req.body)
-   Usuario.findOne({ "_id" : req.body.id}).then((usuario) => {
+    console.log(req.body)
+    
+
+    Usuario.findOne({ "_id" : req.body.id}).then((usuario) => {
         usuario.nome = req.body.nome
         usuario.email = req.body.email
-        console.log("weaweaewaeawewaeweawewae")
+
+         
+        usuario.save().then(() =>{
+            retorno.status = '0'
+            retorno.return_msg.push("Usuário Alterado com Sucesso.")
+            res.send(toJson(retorno))
+
+        }).catch((erro) =>{
+            retorno.return_msg.push("Erro ao salvar usuário no Banco")
+            res.send(toJson(retorno))
+            
+        })
+    
+
+        
+        
+    }).catch((err)=>{
+        res.status(500).json(toJson(retorno));
+  })
+    
+});
+
+/*
+router.put("/edit/", (req, res) => {
+    var retorno = new Retorno()
+    console.log(req.body)
+    
+
+    Usuario.findOne({ "_id" : req.body.id}).then((usuario) => {
+        usuario.nome = req.body.nome
+        usuario.email = req.body.email
 
         bcrypt.genSalt(10, (err, salt) =>{
             bcrypt.hash(req.body.senha, salt, (erro, hash) => {
@@ -217,19 +240,19 @@ router.put("/edit/", (req, res) => {
                     retorno.return_msg.push("Houve um erro durante o salvamento do usuário")
                     res.send(toJson(retorno))
                 }
-
+                
                 usuario.senha = hash
 
-                console.log(hash)
-
+                
                 usuario.save().then(() =>{
+                    console.log('AAAAAAAAAAA')
                     retorno.status = '0'
-                    retorno.return_msg = erros
                     retorno.return_msg.push("Usuário Alterado com Sucesso.")
-                    console.log("Usuário Alterado com Sucesso.");
                     res.send(toJson(retorno))
 
                 }).catch((erro) =>{
+                    console.log('BBBBBBBBBBB: '+ erro)
+
                     retorno.return_msg.push("Erro ao salvar usuário no Banco")
                     res.send(toJson(retorno))
                     
@@ -238,19 +261,15 @@ router.put("/edit/", (req, res) => {
 
         })
         
-   }).catch((err)=>{
-    console.log(err)
-    res.status(500).json(toJson(retorno));
-
-  
+    }).catch((err)=>{
+        res.status(500).json(toJson(retorno));
   })
     
 });
-
+*/
 function toJson(retorno){
     let json = JSON.stringify(retorno)
-    //console.log(json)
-        return json
+    return json
 
 }
 

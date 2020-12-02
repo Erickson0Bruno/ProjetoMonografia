@@ -8,6 +8,10 @@ const session = require("express-session")
 const flash = require("connect-flash")
 const axios = require('axios')
 
+
+const SECRET = "164fee6cc59730e452b0eca679499a1e"
+const jwt = require('jsonwebtoken');
+
 //Declaracao de Rotas
 const router = require('./routes/routes')
 
@@ -39,6 +43,7 @@ const router = require('./routes/routes')
 
     //Public -- pasta do bootstrap
     app.use(express.static(path.join(__dirname, "public")));
+    app.use(express.static(path.join(__dirname, "scripts")));
 
     //Midwares mensagens em tela
     app.use((req, res, next) =>{
@@ -46,7 +51,7 @@ const router = require('./routes/routes')
         res.locals.success_msg = req.flash("success_msg")  
         res.locals.error_msg = req.flash("error_msg")
         res.locals.error = req.flash("error")
-        res.locals.user = req.user || null
+        res.locals.user = req.session.user || null
         next()
 
     })

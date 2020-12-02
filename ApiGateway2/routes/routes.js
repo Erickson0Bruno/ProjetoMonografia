@@ -10,6 +10,11 @@ const {
     postLogin,
     postLogout
 } = require('../controller/auth')
+
+const {
+    postLikeQuestion,
+    postDislikeQuestion
+} = require('../controller/questions')
   
 module.exports = app => {
     
@@ -29,5 +34,12 @@ module.exports = app => {
     //LOGIN
     app.post('/auth/login', postLogin)//LOGIN
     app.post('/auth/logout', postLogout) //LOGOUT
+
+
+     //LERARNING STYLE
+    app.post('/learningstyle/like/:id_question', postLikeQuestion)
+    app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
+    //app.post('/questions/:id_question', postQuestion)
+
 
 }

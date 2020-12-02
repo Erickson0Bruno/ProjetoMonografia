@@ -5,7 +5,6 @@ const bodyParser = require("body-parser")
 const app = express()
 const path = require('path')
 const session = require("express-session")
-const flash = require("connect-flash")
 const mongoose = require("./config/db_conection")
 const passport = require('passport')
 require("./config/authorization")(passport)
@@ -20,29 +19,21 @@ const admin = require('./routes/admin')
         resave: false,
 //        ttl: 1*5, //60 segundos de seção -- apenas para teste
         saveUninitialized: true
-    }))
+    }))    
     app.use(passport.initialize())
     app.use(passport.session())
-    app.use(flash())
-
+    
     //Body Parser
         app.use(bodyParser.urlencoded({extended: true}));
         app.use(bodyParser.json());
-    //HadleBars 
-    app.engine('handlebars', handlebars({defaultLayout : 'main'}));
-    app.set('view engine', 'handlebars');
-    app.set('views', 'views');
-
-     //Public -- pasta do bootstrap
-     app.use(express.static(path.join(__dirname, "public")));
-
+    
+    
     //Midwares
     app.use((req, res, next) =>{
+        res.header('Access-Control-Allow-Origin', '*')
+        res.header('Access-Control-Allow-Method', 'GET, POST, PUT, OPTIONS')
+        
         //criando variaveis globais 
-        res.locals.success_msg = req.flash("success_msg")  
-        res.locals.error_msg = req.flash(" ")
-        res.locals.error = req.flash("error")
-        res.locals.user = req.user || null
         next()
 
     })
@@ -51,7 +42,7 @@ const admin = require('./routes/admin')
 app.use('/', admin);
 
 //Others
-const PORT = '8085'
+const PORT = '4000'
 app.listen(PORT, function(){
     console.log("Conection Test of Login Microservice on Port: "+ PORT)
 })

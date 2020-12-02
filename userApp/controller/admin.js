@@ -1,22 +1,26 @@
-const { USERAUTH_ENDPOINT } = require('../config/api_endpoints')
+const { API_GATEWAY_ADRESS } = require('../config/api_endpoints')
 const axios = require('axios');
 
-const getDeleteUser = async(req, res) =>{
+const postLogin = async(req, res) =>{
 
     try {
-        console.log(USERAUTH_ENDPOINT + '/usuarios/registro')
-        const erros = await axios.post( USERAUTH_ENDPOINT + '/usuarios/registro', req.body)
+        console.log(API_GATEWAY_ADRESS + '/auth/login')
+        const retorno = await axios.post( API_GATEWAY_ADRESS + '/auth/login', req.body)
         
-        if(erros.data.status = 1){
-            res.render('usuarios/registro', {error : erros.data.erro })   
+        if(retorno.data.status == 1){
+           
+            req.flash("error_msg", retorno.data.return_msg)
+            res.redirect('/auth/login')   
         }else{
-            req.flash("success_msg", "DEU CERTO")
-            res.redirect('/usuarios/registro');
-        }
-        
-        
+            req.session.token = retorno.data.returnData[0].token
+            req.session.user = retorno.data.returnData[0].user
+            req.flash("success_msg", "Usuário Logado")
+            res.redirect('/');
+            
+        }  
     } catch (err) {
-        res.send(err)
+        req.flash("error_msg", err.response.status)
+        res.redirect('/');
         
     }
 
@@ -24,5 +28,5 @@ const getDeleteUser = async(req, res) =>{
 }
 
 module.exports = {
-    getDeleteUser
+    postLogin
 }
