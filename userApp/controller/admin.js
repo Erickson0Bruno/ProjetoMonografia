@@ -19,7 +19,7 @@ const postLogin = async(req, res) =>{
             
         }  
     } catch (err) {
-        req.flash("error_msg", err.response.status)
+        req.flash("error_msg", err)
         res.redirect('/');
         
     }

@@ -1,4 +1,5 @@
 const {
+    getIdExterno,
     postconsultUser,
     postRegistUser,
     getDeleteUser,
@@ -12,6 +13,8 @@ const {
 } = require('../controller/auth')
 
 const {
+    getAllQuestions,
+    getAnswersQuestions,
     postLikeQuestion,
     postDislikeQuestion
 } = require('../controller/questions')
@@ -19,6 +22,7 @@ const {
 module.exports = app => {
     
     //Users
+    app.get('/usuarios/idexterno/:email', getIdExterno);
     app.post('/usuarios/consultUser', postconsultUser)//Consulta de Usuários
     app.get('/usuarios/consultUser/:id', getconsultUserWithID)
     app.post('/usuarios/registro', postRegistUser) //Registro de novos usuários
@@ -37,6 +41,10 @@ module.exports = app => {
 
 
      //LERARNING STYLE
+     
+      
+    app.get('/questions', getAllQuestions);
+    app.get('/answers/:email', getAnswersQuestions);
     app.post('/learningstyle/like/:id_question', postLikeQuestion)
     app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
     //app.post('/questions/:id_question', postQuestion)

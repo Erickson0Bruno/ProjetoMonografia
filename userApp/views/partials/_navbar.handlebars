@@ -11,14 +11,14 @@
     <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
       aria-expanded="false"></a>
     <div class="dropdown-menu">
-      <a href="/usuarios/registro" class="dropdown-item" style="margin-left:5px">REGISTRO</a>
-
+      
       {{#if user}}
-      <a href="/auth/logout" class="dropdown-item" style="margin-left:5px"> LOGOUT</a>
-      <a href="/usuarios/consultUser" class="dropdown-item" style="margin-left:5px"> CONSULTAR </a>
+        <a href="/learningstyle" class="dropdown-item" style="margin-left:5px">LEARNING STYLE</a>
+        <a href="/usuarios/registro" class="dropdown-item" style="margin-left:5px">REGISTRO</a>
+        <a href="/auth/logout" class="dropdown-item" style="margin-left:5px"> LOGOUT</a>
+        <a href="/usuarios/consultUser" class="dropdown-item" style="margin-left:5px"> CONSULTAR </a>
       {{else}}
-      <a href="/usuarios/consultUser" class="dropdown-item" style="margin-left:5px"> CONSULTAR </a>
-      <a href="/auth/login" class="dropdown-item" style="margin-left:5px"> LOGIN </a>
+        <a href="/auth/login" class="dropdown-item" style="margin-left:5px"> LOGIN </a>
 
       {{/if}}
     </div>

@@ -15,6 +15,7 @@ const {
 } = require('../controller/admin')
 
 const {
+    getQuestions,
     postQuestion,
     postLikeQuestion,
     postDislikeQuestion
@@ -65,11 +66,9 @@ module.exports = app => {
     app.post('/auth/login', postLogin)
 
     //LERARNING STYLE
-    app.get('/learningstyle', (req, res) =>{
-        res.render("learningstyle/questions");
-    })
-    app.post('/learningstyle/like/:id_question', postLikeQuestion)
-    app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
+    app.get('/learningstyle', AuthenticatedUser, getQuestions)
+    //app.post('/learningstyle/like/:id_question', postLikeQuestion)
+    //app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
 
 
     

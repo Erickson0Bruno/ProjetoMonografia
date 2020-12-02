@@ -70,7 +70,6 @@ router.post('/registro', (req, res) => {
 
                         newUser.senha = hash
 
-                        console.log(hash)
 
                         newUser.save().then(() =>{
                             retorno.status = '0'
@@ -92,7 +91,6 @@ router.post('/registro', (req, res) => {
            retorno.return_msg.push("Erro ao salvar usuário no Banco")
            restorno.returnData = err
            res.status(500).toJson(retorno)
-           console.log(err)
         })
 
     }
@@ -132,7 +130,6 @@ router.post('/consultUser', (req, res) => {
             
      
     }catch (err){
-        console.log(err)
         res.status(500).json({ err, isError: true })
         
     }
@@ -167,7 +164,6 @@ router.get('/consultUser/:id', (req, res) => {
             
      
     }catch (err){
-        //console.log(err)
         res.status(500).json({ err, isError: true })
         
     }
@@ -177,11 +173,9 @@ router.get('/consultUser/:id', (req, res) => {
 router.delete("/exc/:id", (req, res) => {
     var retorno = new Retorno()
 
-   console.log(req.params.id)
     Usuario.deleteOne({ 
         "_id" : req.params.id
     }).then(() =>{
-        console.log("Excluido")
         retorno.status = '0'
         retorno.return_msg = 'Usuário Excluido com Sucesso'
         
@@ -196,7 +190,6 @@ router.delete("/exc/:id", (req, res) => {
 
 router.put("/edit/", (req, res) => {
     var retorno = new Retorno()
-    console.log(req.body)
     
 
     Usuario.findOne({ "_id" : req.body.id}).then((usuario) => {

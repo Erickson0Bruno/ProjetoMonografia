@@ -47,11 +47,8 @@ router.post('/login', (req, res, next) =>{
           })
           retorno.status = "0"
           retorno.returnData.push({user: user, token: token})
-          //retorno.returnData.push({token})
-          console.log(retorno.returnData)
           retorno.return_msg = 'Usuario encontrado!'
           res.status(200).send(toJson(retorno));
-          //res.json({user, token});
         });
       }
   
