@@ -57,12 +57,19 @@ const postQuestion = (req, res) =>{
 }
 
 const postLikeQuestion = async(req, res, next) =>{
+    
     var idquestion = req.params.id_question
+    
     try {
-        console.log(API_GATEWAY_ADRESS + '/learningstyle/like/'+id_owner+'/' +id_question)
-        const retorno = await axios.get( API_GATEWAY_ADRESS +'/learningstyle/like/'+id_owner+'/' +id_question)
+        //console.log(API_GATEWAY_ADRESS + '/learningstyle/like/'+email+'/' +id_question)
+        console.log("id_questhdgfbs: "+idquestion+" :Método PostLike userApp")
         
-        if(retorno.data.status == 1){
+        const retorno = await axios.post(API_GATEWAY_ADRESS +'/learningstyle/like/'+email+'/' +id_question, {})
+        console.log("AQUI "+idquestion+" :Método PostLike userApp")
+        
+        if(retorno.data.status == '0'){
+            console.log(retorno.data.return_msg)
+            res.status(200);
             //req.flash("error_msg", retorno.data.return_msg)
             
             //res.redirect('/usuarios/registro');

@@ -67,8 +67,8 @@ module.exports = app => {
 
     //LERARNING STYLE
     app.get('/learningstyle', AuthenticatedUser, getQuestions)
-    //app.post('/learningstyle/like/:id_question', postLikeQuestion)
-    //app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
+    app.post('/learningstyle/like/:id_question', postLikeQuestion)
+    app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
 
 
     
