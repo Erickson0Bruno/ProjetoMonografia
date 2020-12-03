@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const Retorno = new Schema({
     status: {
         type : String,
-        default : 1 //1 -erro de negocio  -- 2 -sucesso
+        default : 1 //1 -erro de negocio  -- 0 -sucesso
     },
     return_msg:{
         type : []

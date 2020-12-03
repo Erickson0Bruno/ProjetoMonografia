@@ -25,14 +25,15 @@ const getQuestions = async(req , res) => {
         const requestOne = axios.get(one);
         const requestTwo = axios.get(two);
 
-        axios.all([requestOne, requestTwo]).then(axios.spread((...responses) => {
+        axios.all([requestOne]).then(axios.spread((...responses) => {
         const responseOne = responses[0]
-        const responseTwo = responses[1]
+       // const responseTwo = responses[1]
         //const responesThree = responses[2]
-        console.log("Retorno 2: "+responseTwo.data.returnData[0].prompt)
+        //console.log("Retorno 2: "+responseTwo.data.returnData[0].prompt)
         if(responseOne.status == 200){
             if(responseOne.data.status == '0'){ //tem questões respondidas
-                res.render("learningstyle/questions");
+                //console.log("Resposta: "+ JSON.stringify(responseOne.data.returnData))
+                res.render("learningstyle/questions", {quetions: responseOne.data.returnData});
             }else{
                 res.render("admin/home")
             }
