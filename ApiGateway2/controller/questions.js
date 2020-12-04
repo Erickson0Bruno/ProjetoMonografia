@@ -62,6 +62,36 @@ const postDislikeQuestion = async (req, res) =>{
     }
 }
 
+
+const postAnwserQuestion = async (req, res) =>{
+    var idquestion = req.params.id_question
+    var email = req.params.email
+    var resposta = req.body.anwser
+    var retorno = new Retorno();
+    try {
+
+        console.log(APIEXTERNA + '/users/email/'+email)
+        const retorno1 = await axios.get( APIEXTERNA + '/users/email/'+email)
+        var idExterno = retorno1.data.id //190 //erickson=290
+        console.log("retorno: "+ idExterno)
+
+        ///Path= answer/{owner_id}/{question_number} =>  Request{"value": true, "question_number": 0,
+        //"owner_id": 0}
+        console.log(APIEXTERNA + '/answer/'+idExterno+'/' +idquestion)
+        const retorno2 = await axios.post( APIEXTERNA + '/answer/'+idExterno+'/' +idquestion, 
+        {"value": resposta, "question_number": idquestion, "owner_id": idExterno})
+        
+        retorno.status = '0'
+        retorno.return_msg = 'Resposta aceita'
+
+        res.status(200).send(toJson(retorno));
+    } catch (err) {
+        res.send(err)
+        
+    }
+}
+
+
 const getAnswersQuestions = async(req, res) =>{
     //var idquestion = req.params.id_question
     var retorno = new Retorno();
@@ -188,6 +218,7 @@ function unansweredFunction(anwsers){
 }
 
 module.exports = {
+    postAnwserQuestion,
     getAllQuestions,
     getAnswersQuestions,
     postLikeQuestion,

@@ -99,9 +99,29 @@ const postDislikeQuestion = async(req, res) =>{
 }
 
 
+const postAnwserQuestion = async(req, res) =>{
+    
+    var idquestion = req.params.id_question
+    var email = req.session.user.email
+    
+    try {
+        console.log("POST: "+API_GATEWAY_ADRESS +'/learningstyle/anwser/'+email+'/' +idquestion)
+        const retorno = await axios.post(API_GATEWAY_ADRESS +'/learningstyle/anwser/'+email+'/' +idquestion, req.body)
+        
+        if(retorno.data.status == '0'){
+            res.status(200).send(retorno.data.return_msg);
+            
+        } 
+    } catch (err) {
+        res.send(err)
+       
+   }
+}
+
 
 
 module.exports = {
+    postAnwserQuestion,
     getQuestions,
     postQuestion,
     postLikeQuestion,

@@ -36,3 +36,18 @@ axios.post(API_USER+'/learningstyle/dislike/'+id_question, {})
 
 }
 
+
+function anwser(anwser, id_question){
+  
+  axios.post(API_USER+'/learningstyle/anwser/'+id_question, {anwser:anwser})
+    .then(function(response){
+      console.log("response.data: "+JSON.stringify(response.data)); 
+      console.log("response.status: "+response.status); 
+      card = document.getElementById("card_"+id_question);
+      card.style.display = 'none';
+    }).catch(function(err){
+      console.log(err)
+    });
+  
+  }
+
