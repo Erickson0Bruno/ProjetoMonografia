@@ -33,7 +33,8 @@ const getQuestions = async(req , res) => {
         if(responseOne.status == 200){
             if(responseOne.data.status == '0'){ //tem questões respondidas
                 //console.log("Resposta: "+ JSON.stringify(responseOne.data.returnData))
-                res.render("learningstyle/questions", {quetions: responseOne.data.returnData});
+                
+                res.render("learningstyle/questions", {questions: responseOne.data.returnData, email: req.session.user.email});
             }else{
                 res.render("admin/home")
             }
@@ -59,35 +60,42 @@ const postQuestion = (req, res) =>{
 const postLikeQuestion = async(req, res, next) =>{
     
     var idquestion = req.params.id_question
-    
+    var email = req.session.user.email
+    console.log('adfghjkhfydtvfcsvst')
     try {
-        //console.log(API_GATEWAY_ADRESS + '/learningstyle/like/'+email+'/' +id_question)
-        console.log("id_questhdgfbs: "+idquestion+" :Método PostLike userApp")
-        
-        const retorno = await axios.post(API_GATEWAY_ADRESS +'/learningstyle/like/'+email+'/' +id_question, {})
+        console.log("GET: "+API_GATEWAY_ADRESS +'/learningstyle/like/'+email+'/' +idquestion)
+        const retorno = await axios.post(API_GATEWAY_ADRESS +'/learningstyle/like/'+email+'/' +idquestion, {})
         console.log("AQUI "+idquestion+" :Método PostLike userApp")
         
         if(retorno.data.status == '0'){
-            console.log(retorno.data.return_msg)
-            res.status(200);
-            //req.flash("error_msg", retorno.data.return_msg)
+            console.log("Dentro do if: "+JSON.stringify(retorno.data))
+            res.status(200).send(retorno.data.return_msg);
             
-            //res.redirect('/usuarios/registro');
-
-        }else{
-            
-            //res.redirect('/usuarios/registro');
         } 
     } catch (err) {
         res.send(err)
-        
-    }
+       
+   }
 }
 
 
-const postDislikeQuestion = (req, res) =>{
+const postDislikeQuestion = async(req, res) =>{
+    
     var idquestion = req.params.id_question
-
+    var email = req.session.user.email
+    
+    try {
+        console.log("POST: "+API_GATEWAY_ADRESS +'/learningstyle/dislike/'+email+'/' +idquestion)
+        const retorno = await axios.post(API_GATEWAY_ADRESS +'/learningstyle/dislike/'+email+'/' +idquestion, {})
+        
+        if(retorno.data.status == '0'){
+            res.status(200).send(retorno.data.return_msg);
+            
+        } 
+    } catch (err) {
+        res.send(err)
+       
+   }
 }
 
 

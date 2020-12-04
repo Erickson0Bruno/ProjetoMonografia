@@ -47,7 +47,7 @@ module.exports = app => {
     app.get('/answers/:email', getAnswersQuestions);
     
     app.post('/learningstyle/like/:email/:id_question', postLikeQuestion)
-    app.post('/learningstyle/dislike/:id_question', postDislikeQuestion)
+    app.post('/learningstyle/dislike/:email/:id_question', postDislikeQuestion)
     //app.post('/questions/:id_question', postQuestion)
 
 

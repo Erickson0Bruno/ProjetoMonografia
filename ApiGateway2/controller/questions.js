@@ -20,8 +20,8 @@ const postLikeQuestion = async(req, res) =>{
 
         ///Path= answer/{owner_id}/{question_number} =>  Request{"value": true, "question_number": 0,
         //"owner_id": 0}
-        console.log(API_GATEWAY_ADRESS + '/answer/'+idExterno+'/' +idquestion)
-        const retorno2 = await axios.post( API_GATEWAY_ADRESS + '/answer/'+idExterno+'/' +idquestion, 
+        console.log(APIEXTERNA + '/answer/'+idExterno+'/' +idquestion)
+        const retorno2 = await axios.post( APIEXTERNA + '/answer/'+idExterno+'/' +idquestion, 
         {"value": true, "question_number": idquestion, "owner_id": idExterno})
         
         retorno.status = '0'
@@ -35,9 +35,31 @@ const postLikeQuestion = async(req, res) =>{
 }
 
 
-const postDislikeQuestion = (req, res) =>{
+const postDislikeQuestion = async (req, res) =>{
     var idquestion = req.params.id_question
+    var email = req.params.email
+    var retorno = new Retorno();
+    try {
 
+        console.log(APIEXTERNA + '/users/email/'+email)
+        const retorno1 = await axios.get( APIEXTERNA + '/users/email/'+email)
+        var idExterno = retorno1.data.id //190 //erickson=290
+        console.log("retorno: "+ idExterno)
+
+        ///Path= answer/{owner_id}/{question_number} =>  Request{"value": true, "question_number": 0,
+        //"owner_id": 0}
+        console.log(APIEXTERNA + '/answer/'+idExterno+'/' +idquestion)
+        const retorno2 = await axios.post( APIEXTERNA + '/answer/'+idExterno+'/' +idquestion, 
+        {"value": false, "question_number": idquestion, "owner_id": idExterno})
+        
+        retorno.status = '0'
+        retorno.return_msg = 'Resposta aceita'
+
+        res.status(200).send(toJson(retorno));
+    } catch (err) {
+        res.send(err)
+        
+    }
 }
 
 const getAnswersQuestions = async(req, res) =>{
@@ -54,7 +76,7 @@ const getAnswersQuestions = async(req, res) =>{
         console.log(APIEXTERNA + '/answers/'+idExterno)
         const retorno2 = await axios.get( APIEXTERNA + '/answers/'+idExterno)
         const anwsers = retorno2.data
-
+        console.log("RESSS: "+anwsers[0].question_number)
                 
         console.log(APIEXTERNA + '/questions/')
         const retorno3 = await axios.get( APIEXTERNA + '/questions/')
@@ -62,14 +84,14 @@ const getAnswersQuestions = async(req, res) =>{
 
         
         retorno.return_msg = 'Consulta realizada com sucesso'
-        retorno.returnData = unansweredQuestions(allQuestions, anwsers)//retorno2.data
+        retorno.returnData = unansweredQuestions(allQuestions, anwsers, idExterno)//retorno2.data
         if(retorno.returnData != undefined){//se o usuario tem perguntas a responder
             retorno.status = '0'
         }
         
         res.send(toJson(retorno))
     } catch (err) {
-        //console.log(err)
+        console.log(err)
         
         if(err.response.status == 404 && err.response.data != undefined){
             retorno.status = '0'
@@ -119,7 +141,7 @@ function toJson(retorno){
 }
 
 //retorna um JSON com as questoes {number, prompt, type}
-function unansweredQuestions(allQuestions, anwsers){
+function unansweredQuestions(allQuestions, anwsers, idexterno){
     const unanswered = unansweredFunction(anwsers);
     const returnQuestions = []
     if(unanswered.length == 0){
@@ -129,8 +151,7 @@ function unansweredQuestions(allQuestions, anwsers){
             for(j=0; j<allQuestions.length;j++){
                 //console.log(allQuestions[j])
                 if(unanswered[i] == allQuestions[j].number){
-                    
-                    returnQuestions.push(allQuestions[j])
+                   returnQuestions.push(allQuestions[j])
                 }
             }
         }
@@ -148,7 +169,8 @@ function unansweredFunction(anwsers){
         57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80]
     let anwsersquestions = []
     
-    for(i=0; i<allAnswers.length; i++){
+    for(i=0; i<anwsers.length; i++){
+       
         anwsersquestions.push(anwsers[i].question_number)
     }
      const b = [1, 2, 3, 4, 5, 13, 10, 8];
