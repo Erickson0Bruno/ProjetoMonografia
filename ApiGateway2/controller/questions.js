@@ -73,8 +73,7 @@ const postAnwserQuestion = async (req, res) =>{
         console.log(APIEXTERNA + '/users/email/'+email)
         const retorno1 = await axios.get( APIEXTERNA + '/users/email/'+email)
         var idExterno = retorno1.data.id //190 //erickson=290
-        console.log("retorno: "+ idExterno)
-
+        
         ///Path= answer/{owner_id}/{question_number} =>  Request{"value": true, "question_number": 0,
         //"owner_id": 0}
         console.log(APIEXTERNA + '/answer/'+idExterno+'/' +idquestion)
@@ -101,12 +100,10 @@ const getAnswersQuestions = async(req, res) =>{
         console.log(APIEXTERNA + '/users/email/'+req.params.email)
         const retorno1 = await axios.get( APIEXTERNA + '/users/email/'+req.params.email)
         var idExterno = retorno1.data.id //190
-        console.log("retorno: "+ idExterno)
-
+       
         console.log(APIEXTERNA + '/answers/'+idExterno)
         const retorno2 = await axios.get( APIEXTERNA + '/answers/'+idExterno)
         const anwsers = retorno2.data
-        console.log("RESSS: "+anwsers[0].question_number)
                 
         console.log(APIEXTERNA + '/questions/')
         const retorno3 = await axios.get( APIEXTERNA + '/questions/')
@@ -121,13 +118,12 @@ const getAnswersQuestions = async(req, res) =>{
         
         res.send(toJson(retorno))
     } catch (err) {
-        console.log(err)
         
         if(err.response.status == 404 && err.response.data != undefined){
             retorno.status = '0'
             retorno.return_msg = err.response.data
 
-            console.log(APIEXTERNA + '/questions/'+ '  Dentro do Cath')
+            console.log(APIEXTERNA + '/questions/')
             const retorno3 = await axios.get( APIEXTERNA + '/questions/')
             retorno.returnData = retorno3.data
 

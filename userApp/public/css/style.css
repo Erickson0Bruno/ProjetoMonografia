@@ -1,0 +1,27 @@
+.progress {
+  position: relative;
+  height: 25px;
+}
+.progress > .progress-type {
+  position: absolute;
+  left: 0px;
+  font-weight: 800;
+  padding: 4px 10px; /* top, right , bottom e left */
+  color: rgb(255, 255, 255);
+  background-color: rgba(25, 25, 25, 0.2);
+}
+.progress > .progress-completed {
+  position: absolute;
+  right: 0px;
+  font-weight: 800;
+  padding: 4px 10px; /* top, right , bottom e left */
+}
+
+.centralizado {
+  max-width: 400px;
+  position: absolute;
+  text-align: center;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

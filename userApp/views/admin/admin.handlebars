@@ -1,4 +1,5 @@
 
+<!--
 <div class="card  col-md-5 mx-auto" style="background-color: #ffde59;">
    <div class="card-body">
       
@@ -23,3 +24,54 @@
    </form>
    </div>
 </div>
+
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+<section id="login" class="text-center mt-auto">
+         <div class="container ">
+            <div class="row">
+               <div class="col-md-4 mx-auto centralizado">
+                  <div class="card mb-2 ">
+                     <div class="card-body">
+                        <img src="./img/logo-great.png" width="50" height="50" class="img-fluid" alt="">
+                        <h3 class="d-inline align-middle">GReAT Login</h3>
+                        <div>
+                          <hr>
+                          <div class="text-secondary mb-2">Informe os dados para entrar</div>
+                        </div>
+                        <form action="/auth/login" method="POST">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="xWgvzrY2yOUEnZcynpThiVsgcj92J241aOAJo9vRhGmJL6N2S6uAoM9rXc5WfMNf">
+                           <div class="form-group mb-1">
+                              <input type="email" class="form-control form-control-lg" name="email" placeholder="Usuário" aria-label="Username" aria-describedby="basic-addon1" required="">
+                           </div>
+                           <div class="form-group mb-1">
+                              <input type="password" class="form-control form-control-lg" name="password" placeholder="Senha" aria-label="Senha" aria-describedby="basic-addon1" required="">
+                           </div>
+                           <button type="submit" class="btn btn-dark btn-block">Entrar</button>
+                        </form>
+                     </div>
+                     <div class="mt-4">Não tem conta?<a href="./signup.html"> Registrar</a></div>
+                     <hr>
+                     <div class="card-body">
+                       <div class="d-flex flex-row">
+                        <a href="#facebook" class="btn btn-primary btn-block mt-auto m-1"><i class="fab fa-facebook-square"></i>  Facebook</a>
+                        <a href="#google" class="btn btn-danger btn-block mt-auto m-1"><i class="fab fa-google-plus-square"></i> Google</a>
+                       </div>
+                      
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>

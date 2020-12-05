@@ -2,7 +2,7 @@
     <div class="alert alert-danger col-md-7 mx-auto">{{texto}}</div>
     {{else}}
 {{/each}}
-
+<!--
 <h3 class=" col-md-7 mx-auto">Cadastrar Usuário:</h3>
 
 <div class="card  col-md-7 mx-auto"> 
@@ -31,3 +31,45 @@
         </form>
     </div>
 </div>
+-->
+
+
+
+<section id="login" class="text-center mt-auto">
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-4 mx-auto centralizado">
+                <div class="card mb-2 ">
+                    <div class="card-body">
+                        <img src="./img/logo-great.png" width="50" height="50" class="img-fluid" alt="">
+                        <h3 class="d-inline align-middle"> Registro de Usuário</h3>
+                        <div>
+                            <hr>
+                            <div class="text-secondary mb-2">Informe os dados para se registrar</div>
+                        </div>
+                        <form action="/usuarios/registro" method="POST">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="xWgvzrY2yOUEnZcynpThiVsgcj92J241aOAJo9vRhGmJL6N2S6uAoM9rXc5WfMNf">
+                            <div class="form-group mb-1">
+                                <input type="text" class="form-control form-control-lg" name="nome" placeholder="Usuário" aria-label="Username" aria-describedby="basic-addon1" required="">
+                            </div>
+                            <div class="form-group mb-1">
+                            <input type="text" class="form-control form-control-lg" name="email" placeholder="E-mail" aria-label="Username" aria-describedby="basic-addon1" required="">
+                            </div>
+                            <div class="form-group mb-1">
+                                <input type="password" class="form-control form-control-lg" name="senha" placeholder="Senha" aria-label="Senha" aria-describedby="basic-addon1" required="">
+                            </div>
+                            <div class="form-group mb-1">
+                            <input type="password" class="form-control form-control-lg" name="senha2" placeholder="Confirmar Senha" aria-label="Senha" aria-describedby="basic-addon1" required="">
+                            </div>
+                            <button type="submit" class="btn btn-dark btn-block">Registrar</button>
+                            <div class="mt-4">Já tem usuário?<a href="./login.html">Login</a></div>     
+                        </form>
+                    </div>
+                
+                
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
