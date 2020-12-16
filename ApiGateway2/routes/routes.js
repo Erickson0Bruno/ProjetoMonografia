@@ -17,7 +17,8 @@ const {
     getAllQuestions,
     getAnswersQuestions,
     postLikeQuestion,
-    postDislikeQuestion
+    postDislikeQuestion,
+    getDashboard
 } = require('../controller/questions')
   
 module.exports = app => {
@@ -53,6 +54,6 @@ module.exports = app => {
     app.post('/learningstyle/anwser/:email/:id_question', postAnwserQuestion)
 
     //app.post('/questions/:id_question', postQuestion)
-
+    app.get('/learningstyle/dashboard/:email', getDashboard);
 
 }

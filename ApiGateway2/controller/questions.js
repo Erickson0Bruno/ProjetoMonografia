@@ -160,6 +160,32 @@ const getAllQuestions = async(req, res) =>{
     }
 }
 
+
+const getDashboard = async(req, res) =>{
+    var retorno = new Retorno();
+    try{ 
+        console.log(APIEXTERNA + '/users/email/'+req.params.email)
+        const retorno1 = await axios.get( APIEXTERNA + '/users/email/'+req.params.email)
+        var idExterno = 190//retorno1.data.id //190
+    
+        console.log(APIEXTERNA + '/learningstyle/'+idExterno)
+        const retorno2 = await axios.get( APIEXTERNA + '/learningstyle/'+idExterno)
+        console.log('Passou!')
+        const anwsers = retorno2.data
+       
+        retorno.status = '0'
+        retorno.return_msg = 'Consulta realizada com sucesso'
+        retorno.returnData = anwsers
+
+        console.log(toJson(retorno.returnData))
+        res.send(toJson(retorno))
+
+    }catch(err){
+        res.send(err)
+
+    }
+}
+
 function toJson(retorno){
     let json = JSON.stringify(retorno)
     return json
@@ -218,5 +244,6 @@ module.exports = {
     getAllQuestions,
     getAnswersQuestions,
     postLikeQuestion,
-    postDislikeQuestion
+    postDislikeQuestion,
+    getDashboard
 }

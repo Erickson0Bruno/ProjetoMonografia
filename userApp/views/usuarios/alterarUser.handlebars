@@ -1,6 +1,7 @@
 
-<h3 class=" col-md-7 mx-auto">Alterar Usuário:</h3>
+
 <div class="card  col-md-7 mx-auto"> 
+    <h3 class=" col-md-7 mx-auto">Alterar Usuário:</h3>
     <div class="card-body">
         <form action="/usuarios/edit/" method="post">
             
@@ -11,6 +12,14 @@
 
             <label for="email">Email:</label>
             <input type="email" name="email" class="form-control" value="{{usuarios.email}}">
+
+            <label for="email">Senha:</label>
+            <input type="email" name="email" class="form-control" value="">
+
+
+            <label for="email">Confirmar Senha:</label>
+            <input type="email" name="email" class="form-control" value="">
+
 
 
             <button type="submit" class="btn btn-success mt-4"> Alterar Dados </button>

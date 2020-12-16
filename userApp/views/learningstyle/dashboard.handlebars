@@ -1,0 +1,104 @@
+
+<section id="authoring-header" class="bg-primary text-white py-3">
+    <div class="container">
+        <div class="row" style="text-align: center;">
+            <div class="col">
+                <h2><i class="fas fa-brain "></i> Learning Style </h2>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="background-color:#E6E9EC">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/usuario/dashboard/">Dashboard</a></li>
+        <li class="breadcrumb-item" aria-current="page">Estilos de Aprendizagem</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="row">
+      <div class="col-12 mt-3">
+
+
+      </div>
+  </div>
+</section>
+<section id="leaning-style" class="bg-light">
+  <div class="container">
+        <div class="row py-3">
+          <div class="col-md-3">
+                <div class="card  text-center bg-purple">
+                    <div class="card-body">
+                        <h3>Estilos de Aprendizagem (Kolb)</h3>
+                        <hr/>
+                        <h1 class="display-3 pb-3"><i class="fas fa-chart-pie"></i></h1>
+                    </div>
+                </div>
+           </div>
+        {{#each dashboard}}
+           <div class="col-md-9">
+             <div class="row">
+                 
+               <div class="col-md-3">
+                  
+                 <div class="card text-center bg-primary text-white">
+                     
+                     <div class="card-body">
+                         <h3>Activist</h3>
+                         <h1 class="display-4">{{activist.activist_count}} </h1>
+
+                     </div>
+                 </div>
+                  <div class="alert alert-primary" role="alert">{{activist.activist_level}}</div>
+                    
+               </div>
+               <div class="col-md-3">
+                 <div class="card text-center bg-primary text-white">
+                     <div class="card-body">
+                         <h3>Reflector</h3>
+                         <h1 class="display-4">{{reflector.reflector_count}} </h1>
+
+                     </div>
+                 </div>
+                 <div class="alert alert-primary" role="alert">{{reflector.reflector_level}}</div>
+
+               </div>
+
+
+               <div class="col-md-3">
+                   
+                 <div class="card text-center bg-primary text-white">
+                     <div class="card-body">
+                         <h3>Theorist</h3>
+                         <h1 class="display-4"> {{theorist.theorist_count}}</h1>
+
+                     </div>
+                 </div>
+                 <div class="alert alert-primary" role="alert">{{theorist.theorist_level}}</div>
+               </div>
+               <div class="col-md-3">
+                 
+                 <div class="card text-center bg-primary text-white">
+                     <div class="card-body">
+                         <h3>Pragmatist</h3>
+                         <h1 class="display-4">{{pragmatist.pragmatist_count}}  </h1>
+                     </div>
+                 </div>
+                 <div class="alert alert-primary" role="alert">{{pragmatist.pragmatist_level}}</div>
+                 
+               </div>
+
+               
+             </div>
+           </div>
+
+
+{{/each}}
+
+        </div>
+  </div>
+</section>

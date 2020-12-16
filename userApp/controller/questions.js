@@ -100,10 +100,32 @@ const postAnwserQuestion = async(req, res) =>{
 
 
 
+
+const getDashboard = async(req , res) => {
+
+    var email = req.session.user.email
+    
+    try {
+        console.log("GET: "+API_GATEWAY_ADRESS +'/learningstyle/dashboard/'+email)
+        const retorno = await axios.get(API_GATEWAY_ADRESS +'/learningstyle/dashboard/'+email)
+        
+        if(retorno.data.status == '0'){
+           console.log({dashboard: retorno.data.returnData[0].activist})
+            res.render("learningstyle/dashboard", {dashboard: retorno.data.returnData});
+
+           
+        } 
+    } catch (err) {
+        res.send(err)
+       
+   } 
+}
+
 module.exports = {
     postAnwserQuestion,
     getQuestions,
     postQuestion,
     postLikeQuestion,
-    postDislikeQuestion
+    postDislikeQuestion,
+    getDashboard
 }
